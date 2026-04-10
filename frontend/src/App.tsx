@@ -1,49 +1,66 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { BottomNav } from "./components/BottomNav"
-import { CourseDetailPage } from "./pages/CourseDetailPage"
-import { MyCoursesPage } from "./pages/MyCoursesPage"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { Dashboard } from "./pages/admin/Dashboard"
+import { Courses } from "./pages/admin/Courses"
+import { Lecturers } from "./pages/admin/Lecturers"
+import { Categories } from "./pages/admin/Categories"
+import { Videos } from "./pages/admin/Videos"
+import { Login } from "./pages/admin/Login"
 
-function HomePage() {
-  return (
-    <div className="min-h-screen bg-background p-4 pb-20 md:pb-4">
-      <h1 className="text-2xl font-bold mb-4">Бас бет</h1>
-      <p className="text-muted-foreground">Home page - Coming soon</p>
-    </div>
-  )
-}
-
-function MyCoursesPage() {
-  return (
-    <div className="min-h-screen bg-background p-4 pb-20 md:pb-4">
-      <h1 className="text-2xl font-bold mb-4">Менің иманым</h1>
-      <p className="text-muted-foreground">My Courses page - Coming soon</p>
-    </div>
-  )
-}
-
-function SettingsPage() {
-  return (
-    <div className="min-h-screen bg-background p-4 pb-20 md:pb-4">
-      <h1 className="text-2xl font-bold mb-4">Баптаулар</h1>
-      <p className="text-muted-foreground">Settings page - Coming soon</p>
-    </div>
-  )
+// Simple auth check
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const token = localStorage.getItem("admin_token")
+  if (!token) {
+    return <Navigate to="/login" replace />
+  }
+  return <>{children}</>
 }
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-background">
-        <main className="container mx-auto max-w-4xl">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/courses/:id" element={<CourseDetailPage />} />
-            <Route path="/my-courses" element={<MyCoursesPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-          </Routes>
-        </main>
-        <BottomNav />
-      </div>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/courses"
+          element={
+            <ProtectedRoute>
+              <Courses />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/lecturers"
+          element={
+            <ProtectedRoute>
+              <Lecturers />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/categories"
+          element={
+            <ProtectedRoute>
+              <Categories />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/videos"
+          element={
+            <ProtectedRoute>
+              <Videos />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
     </BrowserRouter>
   )
 }
