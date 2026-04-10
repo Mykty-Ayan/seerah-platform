@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { BottomNav } from "./components/BottomNav"
+import { CourseDetailPage } from "./pages/CourseDetailPage"
 
 // Placeholder pages (will be implemented in future sprints)
 function HomePage() {
@@ -36,6 +37,7 @@ function App() {
         <main className="container mx-auto max-w-4xl">
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/courses/:id" element={<CourseDetailPage />} />
             <Route path="/my-courses" element={<MyCoursesPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Routes>
