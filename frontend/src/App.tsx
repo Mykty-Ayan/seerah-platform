@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { BottomNav } from "./components/BottomNav"
 import { CourseDetailPage } from "./pages/CourseDetailPage"
+import { MyCoursesPage } from "./pages/MyCoursesPage"
 
-// Placeholder pages (will be implemented in future sprints)
 function HomePage() {
   return (
     <div className="min-h-screen bg-background p-4 pb-20 md:pb-4">
