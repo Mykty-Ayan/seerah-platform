@@ -34,33 +34,33 @@ export function Dashboard() {
       title: "Курсы", 
       value: stats?.total_courses || 0, 
       icon: BookOpen, 
-      gradient: "from-blue-500/20 to-blue-600/5",
-      iconColor: "text-blue-400",
-      border: "border-blue-500/20"
+      gradient: "from-green-50 to-green-100",
+      iconBg: "bg-green-500",
+      textColor: "text-green-700"
     },
     { 
       title: "Видео", 
       value: stats?.total_videos || 0, 
       icon: Video, 
-      gradient: "from-green-500/20 to-green-600/5",
-      iconColor: "text-green-400",
-      border: "border-green-500/20"
+      gradient: "from-blue-50 to-blue-100",
+      iconBg: "bg-blue-500",
+      textColor: "text-blue-700"
     },
     { 
       title: "Лекторы", 
       value: stats?.total_lecturers || 0, 
       icon: Users, 
-      gradient: "from-purple-500/20 to-purple-600/5",
-      iconColor: "text-purple-400",
-      border: "border-purple-500/20"
+      gradient: "from-purple-50 to-purple-100",
+      iconBg: "bg-purple-500",
+      textColor: "text-purple-700"
     },
     { 
       title: "Пользователи", 
       value: stats?.total_users || 0, 
       icon: TrendingUp, 
-      gradient: "from-orange-500/20 to-orange-600/5",
-      iconColor: "text-orange-400",
-      border: "border-orange-500/20"
+      gradient: "from-orange-50 to-orange-100",
+      iconBg: "bg-orange-500",
+      textColor: "text-orange-700"
     },
   ]
 
@@ -69,41 +69,36 @@ export function Dashboard() {
       title: "Управление курсами", 
       desc: "Создавать, редактировать курсы",
       icon: BookOpen, 
-      to: "/courses",
-      gradient: "from-blue-500/10 to-blue-600/5"
+      to: "/courses"
     },
     { 
       title: "Управление лекторами", 
       desc: "Добавлять лекторов",
       icon: Users, 
-      to: "/lecturers",
-      gradient: "from-purple-500/10 to-purple-600/5"
+      to: "/lecturers"
     },
     { 
       title: "Управление категориями", 
       desc: "Создавать категории",
       icon: Tag, 
-      to: "/categories",
-      gradient: "from-green-500/10 to-green-600/5"
+      to: "/categories"
     },
   ]
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex bg-gray-50">
       <Sidebar />
       <main className="flex-1 ml-64 p-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-            Dashboard
-          </h1>
+          <h1 className="text-4xl font-bold mb-2 text-foreground">Dashboard</h1>
           <p className="text-muted-foreground">Обзор платформы Seerah</p>
         </div>
 
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-pulse">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="h-32 bg-secondary/30 rounded-lg" />
+              <div key={i} className="h-32 bg-gray-200 rounded-lg" />
             ))}
           </div>
         ) : (
@@ -111,18 +106,18 @@ export function Dashboard() {
             {statCards.map((stat, i) => (
               <div 
                 key={stat.title}
-                className={`glass-panel rounded-xl p-6 gradient-border transition-all duration-300 hover:scale-105 hover:shadow-2xl animate-fade-in`}
+                className={`bg-gradient-to-br ${stat.gradient} rounded-xl p-6 border-2 border-white shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105`}
                 style={{ animationDelay: `${i * 100}ms` }}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">{stat.title}</p>
-                    <p className="text-4xl font-bold font-[Space Grotesk]">
+                    <p className={`text-sm font-medium mb-1 ${stat.textColor}`}>{stat.title}</p>
+                    <p className="text-4xl font-bold font-[Space Grotesk] text-foreground">
                       {stat.value}
                     </p>
                   </div>
-                  <div className={`p-3 rounded-lg bg-gradient-to-br ${stat.gradient} ${stat.border} border`}>
-                    <stat.icon className={`w-6 h-6 ${stat.iconColor}`} />
+                  <div className={`p-3 rounded-lg ${stat.iconBg} shadow-lg`}>
+                    <stat.icon className="w-6 h-6 text-white" />
                   </div>
                 </div>
               </div>
@@ -138,11 +133,11 @@ export function Dashboard() {
               <Link
                 key={action.to}
                 to={action.to}
-                className="glass-panel rounded-xl p-6 gradient-border transition-all duration-300 hover:scale-105 hover:shadow-2xl group block"
+                className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-primary/30 hover:shadow-lg transition-all duration-300 hover:scale-105 group block"
                 style={{ animationDelay: `${i * 100}ms` }}
               >
-                <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${action.gradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                  <action.icon className="w-6 h-6 text-primary" />
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:scale-110 transition-all">
+                  <action.icon className="w-6 h-6 text-primary group-hover:text-white transition-colors" />
                 </div>
                 <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">
                   {action.title}
