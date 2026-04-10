@@ -33,6 +33,21 @@ func LoadConfig() (*Config, error) {
 		// .env file not found, use environment variables
 	}
 
+	// Check if DATABASE_URL is provided (Railway style)
+	databaseURL := os.Getenv("DATABASE_URL")
+	if databaseURL != "" {
+		// Parse DATABASE_URL: postgresql://user:pass@host:port/dbname?sslmode=...
+		return &Config{
+			Server: ServerConfig{
+				Port: getEnv("SERVER_PORT", "8080"),
+			},
+			Database: DatabaseConfig{
+				// GORM can use DATABASE_URL directly
+				// We'll use it in Connect() instead of building DSN
+			},
+		}, nil
+	}
+
 	config := &Config{
 		Server: ServerConfig{
 			Port: getEnv("SERVER_PORT", "8080"),
@@ -51,6 +66,12 @@ func LoadConfig() (*Config, error) {
 }
 
 func (c *Config) GetDatabaseURL() string {
+	// If DATABASE_URL is set, use it directly
+	databaseURL := os.Getenv("DATABASE_URL")
+	if databaseURL != "" {
+		return databaseURL
+	}
+
 	return fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		c.Database.Host, c.Database.Port, c.Database.User,
