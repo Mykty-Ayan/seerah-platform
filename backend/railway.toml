@@ -1,0 +1,12 @@
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "./seerah-backend"
+healthcheckPath = "/health"
+healthcheckTimeout = 30
+
+[nixpacks]
+phpVersion = ""
+nodeVersion = ""
+goVersion = "1.25"

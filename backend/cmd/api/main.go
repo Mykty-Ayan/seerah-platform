@@ -19,6 +19,7 @@ import (
 	courseHandler "github.com/ayan/seerah-backend/internal/handler/course"
 	courseRepo "github.com/ayan/seerah-backend/internal/repository/course"
 	"github.com/ayan/seerah-backend/internal/handler/public"
+	"github.com/ayan/seerah-backend/internal/handler/video"
 )
 
 func main() {
@@ -79,6 +80,9 @@ func main() {
 	
 	// Public routes (no auth required)
 	r.Mount("/api", setupPublicRoutes())
+	
+	// Video routes (protected, for admin upload)
+	r.Mount("/api/admin/videos", setupVideoRoutes())
 
 	// TODO: Add more routes here
 
@@ -135,6 +139,13 @@ func setupCourseRoutes() chi.Router {
 func setupPublicRoutes() chi.Router {
 	r := chi.NewRouter()
 	h := public.NewPublicHandler()
+	h.RegisterRoutes(r)
+	return r
+}
+
+func setupVideoRoutes() chi.Router {
+	r := chi.NewRouter()
+	h := video.NewVideoHandler()
 	h.RegisterRoutes(r)
 	return r
 }
