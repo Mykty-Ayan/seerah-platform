@@ -1,0 +1,65 @@
+project:
+ name: "Seerah Platform"
+ description: "Islamic education platform — Seerah content backend in Go + React admin panel"
+
+paths:
+ root: "/home/clawd/.openclaw/workspace/seerah"
+ planning: "/home/clawd/.openclaw/workspace/seerah/_bmad/planning"
+ implementation: "/home/clawd/.openclaw/workspace/seerah/_bmad/implementation"
+ artifacts: "/home/clawd/.openclaw/workspace/seerah/_bmad/artifacts"
+
+stack:
+ backend:
+ language: "Go"
+ framework: "net/http + chi router"
+ database: "PostgreSQL"
+ architecture: "Clean Architecture, DDD"
+ api: "REST + OpenAPI"
+ frontend:
+ language: "TypeScript"
+ framework: "React (latest) + Vite"
+ ui: "Shadcn/ui + Tailwind"
+ type: "Admin panel"
+ deploy:
+ platform: "Railway"
+ services:
+ - name: "seerah-backend"
+ type: "Go service"
+ - name: "seerah-admin"
+ type: "Static / Node"
+
+integrations:
+ trello:
+ api_key: "${TRELLO_API_KEY}"
+ token: "${TRELLO_TOKEN}"
+ board_name: "Seerah Platform"
+ lists:
+ - "Backlog"
+ - "In Progress"
+ - "Review"
+ - "Done"
+ github:
+ token: "${GITHUB_TOKEN}"
+ org: "" # оставь пустым если личный аккаунт
+ repo: "seerah-platform"
+ default_branch: "main"
+ railway:
+ token: "${RAILWAY_TOKEN}"
+ project: "seerah"
+ telegram:
+ bot_token: "${TELEGRAM_BOT_TOKEN}"
+ chat_id: "${TELEGRAM_CHAT_ID}"
+
+quality:
+ code_review:
+ min_issues: 3
+ testing:
+ required: true
+ methodology: "red-green-refactor"
+ definition_of_done:
+ - "Tests pass"
+ - "Code review approved"
+ - "No lint errors"
+ - "Deployed to Railway"
+ - "Trello card moved to Done"
+ - "Telegram notification sent"
