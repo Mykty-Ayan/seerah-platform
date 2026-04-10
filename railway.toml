@@ -1,0 +1,13 @@
+[build]
+builder = "NIXPACKS"
+
+[nixpacks]
+goVersion = "1.25"
+
+[nixpacks.build]
+rootDirectory = "backend"
+
+[deploy]
+startCommand = "./seerah-backend"
+healthcheckPath = "/health"
+healthcheckTimeout = 30

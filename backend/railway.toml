@@ -2,11 +2,14 @@
 builder = "NIXPACKS"
 
 [deploy]
-startCommand = "./seerah-backend"
+startCommand = "cd /app/backend && ./seerah-backend"
 healthcheckPath = "/health"
 healthcheckTimeout = 30
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
 
 [nixpacks]
-phpVersion = ""
-nodeVersion = ""
 goVersion = "1.25"
+
+[nixpacks.build]
+root = "backend"
