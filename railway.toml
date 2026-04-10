@@ -8,6 +8,6 @@ goVersion = "1.25"
 rootDirectory = "backend"
 
 [deploy]
-startCommand = "./seerah-backend"
+startCommand = "./out"
 healthcheckPath = "/health"
 healthcheckTimeout = 30

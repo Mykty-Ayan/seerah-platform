@@ -26,8 +26,10 @@ type DatabaseConfig struct {
 }
 
 func LoadConfig() (*Config, error) {
-	// Load .env file
+	// Load .env file (try multiple locations for Railway compatibility)
 	if err := godotenv.Load(); err != nil {
+		_ = godotenv.Load("../.env")
+		_ = godotenv.Load("/app/backend/.env")
 		// .env file not found, use environment variables
 	}
 
