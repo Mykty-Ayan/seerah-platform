@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Sidebar } from "../../components/admin/Sidebar"
-import { BookOpen, Users, Video, Tag, TrendingUp } from "lucide-react"
+import { BookOpen, Users, Video, Tag, TrendingUp, ArrowRight } from "lucide-react"
 
 const API_URL = import.meta.env.VITE_API_URL || "https://backend-production-685a.up.railway.app/api"
 
@@ -30,30 +30,100 @@ export function Dashboard() {
   }, [token])
 
   const statCards = [
-    { title: "Курсы", value: stats?.total_courses || 0, icon: BookOpen, color: "text-blue-600", bg: "bg-blue-50" },
-    { title: "Видео", value: stats?.total_videos || 0, icon: Video, color: "text-green-600", bg: "bg-green-50" },
-    { title: "Лекторы", value: stats?.total_lecturers || 0, icon: Users, color: "text-purple-600", bg: "bg-purple-50" },
-    { title: "Пользователи", value: stats?.total_users || 0, icon: TrendingUp, color: "text-orange-600", bg: "bg-orange-50" },
+    { 
+      title: "Курсы", 
+      value: stats?.total_courses || 0, 
+      icon: BookOpen, 
+      gradient: "from-blue-500/20 to-blue-600/5",
+      iconColor: "text-blue-400",
+      border: "border-blue-500/20"
+    },
+    { 
+      title: "Видео", 
+      value: stats?.total_videos || 0, 
+      icon: Video, 
+      gradient: "from-green-500/20 to-green-600/5",
+      iconColor: "text-green-400",
+      border: "border-green-500/20"
+    },
+    { 
+      title: "Лекторы", 
+      value: stats?.total_lecturers || 0, 
+      icon: Users, 
+      gradient: "from-purple-500/20 to-purple-600/5",
+      iconColor: "text-purple-400",
+      border: "border-purple-500/20"
+    },
+    { 
+      title: "Пользователи", 
+      value: stats?.total_users || 0, 
+      icon: TrendingUp, 
+      gradient: "from-orange-500/20 to-orange-600/5",
+      iconColor: "text-orange-400",
+      border: "border-orange-500/20"
+    },
+  ]
+
+  const quickActions = [
+    { 
+      title: "Управление курсами", 
+      desc: "Создавать, редактировать курсы",
+      icon: BookOpen, 
+      to: "/courses",
+      gradient: "from-blue-500/10 to-blue-600/5"
+    },
+    { 
+      title: "Управление лекторами", 
+      desc: "Добавлять лекторов",
+      icon: Users, 
+      to: "/lecturers",
+      gradient: "from-purple-500/10 to-purple-600/5"
+    },
+    { 
+      title: "Управление категориями", 
+      desc: "Создавать категории",
+      icon: Tag, 
+      to: "/categories",
+      gradient: "from-green-500/10 to-green-600/5"
+    },
   ]
 
   return (
     <div className="min-h-screen flex">
       <Sidebar />
-      <main className="flex-1 p-8">
-        <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
+      <main className="flex-1 ml-64 p-8">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+            Dashboard
+          </h1>
+          <p className="text-muted-foreground">Обзор платформы Seerah</p>
+        </div>
 
         {loading ? (
-          <p>Загрузка...</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-pulse">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="h-32 bg-secondary/30 rounded-lg" />
+            ))}
+          </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {statCards.map((stat) => (
-              <div key={stat.title} className={`${stat.bg} rounded-lg p-6`}>
-                <div className="flex items-center justify-between">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {statCards.map((stat, i) => (
+              <div 
+                key={stat.title}
+                className={`glass-panel rounded-xl p-6 gradient-border transition-all duration-300 hover:scale-105 hover:shadow-2xl animate-fade-in`}
+                style={{ animationDelay: `${i * 100}ms` }}
+              >
+                <div className="flex items-start justify-between mb-4">
                   <div>
-                    <p className="text-sm text-gray-600">{stat.title}</p>
-                    <p className="text-3xl font-bold mt-1">{stat.value}</p>
+                    <p className="text-sm text-muted-foreground mb-1">{stat.title}</p>
+                    <p className="text-4xl font-bold font-[Space Grotesk]">
+                      {stat.value}
+                    </p>
                   </div>
-                  <stat.icon className={`w-10 h-10 ${stat.color}`} />
+                  <div className={`p-3 rounded-lg bg-gradient-to-br ${stat.gradient} ${stat.border} border`}>
+                    <stat.icon className={`w-6 h-6 ${stat.iconColor}`} />
+                  </div>
                 </div>
               </div>
             ))}
@@ -61,24 +131,29 @@ export function Dashboard() {
         )}
 
         {/* Quick Actions */}
-        <div className="mt-8">
-          <h2 className="text-xl font-semibold mb-4">Быстрые действия</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Link to="/courses" className="block p-6 border rounded-lg hover:shadow-md transition">
-              <BookOpen className="w-8 h-8 text-primary mb-2" />
-              <h3 className="font-semibold">Управление курсами</h3>
-              <p className="text-sm text-gray-600">Создавать, редактировать курсы</p>
-            </Link>
-            <Link to="/lecturers" className="block p-6 border rounded-lg hover:shadow-md transition">
-              <Users className="w-8 h-8 text-primary mb-2" />
-              <h3 className="font-semibold">Управление лекторами</h3>
-              <p className="text-sm text-gray-600">Добавлять лекторов</p>
-            </Link>
-            <Link to="/categories" className="block p-6 border rounded-lg hover:shadow-md transition">
-              <Tag className="w-8 h-8 text-primary mb-2" />
-              <h3 className="font-semibold">Управление категориями</h3>
-              <p className="text-sm text-gray-600">Создавать категории</p>
-            </Link>
+        <div>
+          <h2 className="text-2xl font-bold mb-6 font-[Space Grotesk]">Быстрые действия</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {quickActions.map((action, i) => (
+              <Link
+                key={action.to}
+                to={action.to}
+                className="glass-panel rounded-xl p-6 gradient-border transition-all duration-300 hover:scale-105 hover:shadow-2xl group block"
+                style={{ animationDelay: `${i * 100}ms` }}
+              >
+                <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${action.gradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                  <action.icon className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">
+                  {action.title}
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">{action.desc}</p>
+                <div className="flex items-center text-primary text-sm font-medium group-hover:gap-2 transition-all">
+                  <span>Перейти</span>
+                  <ArrowRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" />
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </main>
